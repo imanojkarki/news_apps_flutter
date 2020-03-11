@@ -9,20 +9,18 @@ class NewsItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final NewsBloc bloc = NewsBlocProvider.of(context);
-
     return StreamBuilder(
-      stream: bloc.notIdealStream,
-      builder: (context, AsyncSnapshot<Future<ItemModel>> snapshot) {
+      stream: bloc.itemStream,
+      builder: (context, AsyncSnapshot<Map<int, Future<ItemModel>>> snapshot) {
         if (!snapshot.hasData) {
           return Text("Still loading data");
         }
         return FutureBuilder(
-          future: snapshot.data,
-          builder: (c, AsyncSnapshot<ItemModel> sn) {
+          future: snapshot.data[id],
+          builder: (context, AsyncSnapshot<ItemModel> sn) {
             if (!sn.hasData) {
-              return Text("Still loading data from future");
+              return Text("Still loading data from future $id");
             }
-            print("The title ${sn.data.title}");
             return Text(sn.data.title);
           },
         );

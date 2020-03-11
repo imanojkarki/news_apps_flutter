@@ -49,7 +49,7 @@ class DbProvider extends Sources {
     final data = await db.query(TABLE_NAME,
         columns: ['*'], where: "id = ?", whereArgs: [id]);
 
-    return (data != null) ? ItemModel.fromDb(data.first) : null;
+    return (data.length > 0) ? ItemModel.fromDb(data.first) : null;
   }
 
   @override

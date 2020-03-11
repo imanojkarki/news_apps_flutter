@@ -7,34 +7,40 @@ import 'package:rxdart/rxdart.dart';
 class NewsBloc {
   static final _repository = Repository();
   BehaviorSubject<List<int>> _topIds = BehaviorSubject<List<int>>();
-  PublishSubject<int> _itemId = PublishSubject<int>();
 
-  //get for sink
+  BehaviorSubject<int> _itemId = BehaviorSubject<int>();
+//getter for sink
   Function(int) get itemId => _itemId.sink.add;
 
-  // Stream<List<int>> get  topIds => _topIds.stream;
-  Stream<Map<int, Future<ItemModel>>> get itemStream =>
-      _topIds.stream.transform(_itemTransform());
+  Stream<List<int>> get topIds => _topIds.stream;
+
+  Stream<Map<int, Future<ItemModel>>> itemStream;
+
+  ///not ideal
+  ///todo remove this
+  // Stream<ItemModel> notIdealStream;
+  NewsBloc() {
+    // notIdealStream = _itemId.stream.transform(_itemTransformer);
+    itemStream = _itemId.stream.transform(_itemTransform());
+  }
+
+  /* 
+  final _itemTransformer = StreamTransformer<int, ItemModel>.fromHandlers(
+    handleData: (id, sink) {
+      final ItemModel item = ItemModel(id: id, title: 'some title $id');
+      sink.add(item);
+    },
+  );
+  */
 
   fetchTopIds() async {
     final list = await _repository.fetchTopIds();
     _topIds.sink.add(list);
   }
 
-  Stream<List<int>> get topIds => _topIds.stream;
-
-  get notIdealStream => _itemId.stream.transform(_itemTransformer);
-
-  final _itemTransformer =
-      StreamTransformer<int, Future<ItemModel>>.fromHandlers(
-          handleData: (id, sink) {
-    var item = _repository.fetchItem(id);
-    sink.add(item);
-  });
-
   _itemTransform() {
     return ScanStreamTransformer(
-        (Map<int, Future<ItemModel>> cache, id, index) {
+        (Map<int, Future<ItemModel>> cache, int id, index) {
       cache[id] = _repository.fetchItem(id);
       return cache;
     }, <int, Future<ItemModel>>{});
