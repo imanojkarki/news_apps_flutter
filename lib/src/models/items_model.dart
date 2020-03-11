@@ -67,7 +67,7 @@ class ItemModel {
     by = json['by'];
     descendants = json['descendants'];
     id = json['id'];
-    kids = jsonDecode['kids'].cast<int>();
+    kids = jsonDecode(json['kids']).cast<int>();
     score = json['score'];
     text = json['text'];
     time = json['time'];

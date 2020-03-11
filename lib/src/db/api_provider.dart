@@ -6,10 +6,11 @@ import 'package:news_apps_flutter/src/models/items_model.dart';
 
 class ApiProvider extends Sources {
   Client client = Client();
+
   @override
   fetchTopIds() async {
     final response = await client.get("$BASE_URL/topstories.json");
-    return jsonDecode(response.body); // return ids;
+    return jsonDecode(response.body).cast<int>(); // return ids;
   }
 
   @override

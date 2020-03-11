@@ -1,11 +1,12 @@
 import 'package:news_apps_flutter/src/core/constants.dart';
+import 'package:news_apps_flutter/src/db/sources.dart';
 import 'package:news_apps_flutter/src/models/items_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'dart:io';
 
-class DbProvider {
+class DbProvider extends Sources {
   Database db;
   DbProvider() {
     init();
@@ -49,5 +50,11 @@ class DbProvider {
         columns: ['*'], where: "id = ?", whereArgs: [id]);
 
     return (data != null) ? ItemModel.fromDb(data.first) : null;
+  }
+
+  @override
+  Future<List<int>> fetchTopIds() {
+    // TODO: implement fetchTopIds
+    return null;
   }
 }
