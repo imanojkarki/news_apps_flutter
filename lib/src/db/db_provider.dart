@@ -38,13 +38,13 @@ class DbProvider extends Sources {
     });
   }
 
-  insertItem(ItemModel itemModel) {
+  Future<int> insertItem(ItemModel itemModel) {
     return db.insert(TABLE_NAME, itemModel.toJson(),
         conflictAlgorithm: ConflictAlgorithm.replace);
     // insert into Items() values()
   }
 
-  fetchItem(int id) async {
+  Future<ItemModel> fetchItem(int id) async {
     // select * from Item Where id = :id
     final data = await db.query(TABLE_NAME,
         columns: ['*'], where: "id = ?", whereArgs: [id]);

@@ -11,24 +11,11 @@ class Repository {
   final apiProvider = ApiProvider();
   */
 
-  fetchTopIds() async {
+  Future<List<int>> fetchTopIds() async {
     return await sources[1].fetchTopIds();
   }
 
-  fetchItem(int id) async {
-    // check if the id is saved in localdb
-    // if yes, retreive
-    // if no, get from api and save the row  in localdb for future use
-
-    // ItemModel item;
-    // item = await dbProvider.fetchItem(id);
-    // if (item == null) {
-    //   item = await apiProvider.fetchItem(id);
-    //   if (item != null) {
-    //     dbProvider.insertItem(item);
-    //   }
-    // }
-    // return item;
+  Future<ItemModel> fetchItem(int id) async {
     int row = 0;
     var source;
     ItemModel item;
@@ -48,7 +35,7 @@ class Repository {
         origin.insertItem(item);
       }
     }
-
+    print(item.toJson());
     return item;
   }
 }
