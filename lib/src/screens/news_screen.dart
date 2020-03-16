@@ -27,13 +27,19 @@ class NewsScreen extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         }
-        return ListView.builder(
-          itemCount: snapshot.data.length,
-          itemBuilder: (BuildContext context, int index) {
-            bloc.itemId(snapshot.data[index]);
-            return NewsItem(
-                id: snapshot.data[index]); //Text('${snapshot.data[index]}');
+        return RefreshIndicator(
+          onRefresh: () async {
+            await bloc.clearData();
+            await bloc.fetchTopIds();
           },
+          child: ListView.builder(
+            itemCount: snapshot.data.length,
+            itemBuilder: (BuildContext context, int index) {
+              bloc.itemId(snapshot.data[index]);
+              return NewsItem(
+                  id: snapshot.data[index]); //Text('${snapshot.data[index]}');
+            },
+          ),
         );
       },
     );

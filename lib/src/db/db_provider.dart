@@ -6,9 +6,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'dart:io';
 
-class DbProvider extends Sources {
+class _DbProvider implements Sources, Cache {
   Database db;
-  DbProvider() {
+  _DbProvider() {
     init();
   }
   init() async {
@@ -57,4 +57,10 @@ class DbProvider extends Sources {
     // TODO: implement fetchTopIds
     return null;
   }
+
+  Future<int> clearData() async {
+    return db.delete(TABLE_NAME);
+  }
 }
+
+final dbProvider = _DbProvider();

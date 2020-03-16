@@ -19,9 +19,9 @@ class ApiProvider extends Sources {
     return ItemModel.fromJson(jsonDecode(response.body));
   }
 
-  @override
-  Future<int> insertItem(ItemModel item) {
-    // TODO: implement insertItem
-    return null;
-  }
+  // @override
+  // Future<int> insertItem(ItemModel item) {
+  //   // TODO: implement insertItem
+  //   return null;
+  // }
 }

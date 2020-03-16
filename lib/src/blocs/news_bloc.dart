@@ -14,14 +14,19 @@ class NewsBloc {
 
   Stream<List<int>> get topIds => _topIds.stream;
 
-  Stream<Map<int, Future<ItemModel>>> itemStream;
+  // Stream<Map<int, Future<ItemModel>>> itemStream;
+
+  BehaviorSubject<Map<int, Future<ItemModel>>> _itemStream =
+      BehaviorSubject<Map<int, Future<ItemModel>>>();
+
+  Stream<Map<int, Future<ItemModel>>> get itemStream => _itemStream.stream;
 
   ///not ideal
   ///todo remove this
   // Stream<ItemModel> notIdealStream;
   NewsBloc() {
     // notIdealStream = _itemId.stream.transform(_itemTransformer);
-    itemStream = _itemId.stream.transform(_itemTransform());
+    _itemId.stream.transform(_itemTransform()).pipe(_itemStream);
   }
 
   /* 
@@ -41,13 +46,19 @@ class NewsBloc {
   _itemTransform() {
     return ScanStreamTransformer(
         (Map<int, Future<ItemModel>> cache, int id, index) {
+      print("It is called $index times");
       cache[id] = _repository.fetchItem(id);
       return cache;
     }, <int, Future<ItemModel>>{});
   }
 
+  clearData() async {
+    return _repository.clearData();
+  }
+
   dispose() {
     _topIds.close();
     _itemId.close();
+    _itemStream.close();
   }
 }
