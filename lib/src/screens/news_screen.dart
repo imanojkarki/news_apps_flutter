@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:news_apps_flutter/src/blocs/news_bloc_provider.dart';
 import 'package:news_apps_flutter/src/blocs/news_bloc.dart';
-import 'package:news_apps_flutter/src/widgets/news_items.dart';
+import 'package:news_apps_flutter/src/widgets/news_item.dart';
 
 class NewsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = NewsBlocProvider.of(context);
-
-    bloc.fetchTopIds();
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Latest News"),
@@ -36,8 +33,7 @@ class NewsScreen extends StatelessWidget {
             itemCount: snapshot.data.length,
             itemBuilder: (BuildContext context, int index) {
               bloc.itemId(snapshot.data[index]);
-              return NewsItem(
-                  id: snapshot.data[index]); //Text('${snapshot.data[index]}');
+              return NewsItem(id: snapshot.data[index]);
             },
           ),
         );
