@@ -33,7 +33,7 @@ class NewsDetail extends StatelessWidget {
             future: snapshot.data[newsId],
             builder: (BuildContext context, AsyncSnapshot<ItemModel> sn) {
               if (!sn.hasData) {
-                return Text("Still loadin data from future");
+                return CircularProgressIndicator();
               }
               return buildCommentList(sn.data, snapshot.data);
             });
