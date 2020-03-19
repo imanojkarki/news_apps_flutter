@@ -27,7 +27,7 @@ class Router {
             builder: (BuildContext context) {
               final bloc = CommentBlocProvider.of(context);
               bloc.commentFetcher(newsId);
-print("The id we get $newsId");
+              print("The id we get $newsId");
 
               return NewsDetail(newsId);
             },
